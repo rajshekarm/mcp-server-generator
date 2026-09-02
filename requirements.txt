@@ -1,1 +1,4 @@
 fastmcp
+fastapi
+httpx
+uvicorn

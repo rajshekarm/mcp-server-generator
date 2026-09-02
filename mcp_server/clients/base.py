@@ -1,23 +1,15 @@
 from typing import Any
-
+import httpx
 
 class BaseApiClient:
+    def __init__(self, base_url: str, timeout: float = 10.0) -> None:
+        self.base_url = base_url.rstrip("/")
+        self.timeout = timeout
 
     async def get(self, path: str, **kwargs: Any) -> dict[str, Any]:
-        return {
-            "policyNumber": "POL-1001",
-            "policyStatus": "A",
-            "effectiveDate": "2026-01-01",
-            "expirationDate": "2026-12-31",
-            "productName": "Auto Insurance",
-            "annualPremium": 1200.00,
-        }
+        url = f"{self.base_url}/{path.lstrip('/')}"
 
-    async def post(self, path, **kwargs):
-        ...
-
-    async def put(self, path, **kwargs):
-        ...
-
-    async def delete(self, path, **kwargs):
-        ...
+        async with httpx.AsyncClient(timeout=self.timeout) as client:
+            response = await client.get(url, **kwargs)
+            response.raise_for_status()
+            return response.json()

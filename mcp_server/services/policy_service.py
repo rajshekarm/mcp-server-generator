@@ -1,5 +1,4 @@
-from mcp_server.clients.policy import PolicyApiClient
-
+from clients.policy import PolicyApiClient
 
 class PolicyService:
 

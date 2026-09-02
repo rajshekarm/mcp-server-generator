@@ -1,7 +1,6 @@
 from fastmcp import FastMCP
 
-from mcp_server.services.policy_service import PolicyService
-
+from services.policy_service import PolicyService
 
 def register_policy_tools(
     mcp: FastMCP,
