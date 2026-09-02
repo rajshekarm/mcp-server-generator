@@ -1,0 +1,16 @@
+{
+  "CLM-1001": {
+    "claim_type": "auto",
+    "estimated_loss": 12000,
+    "injury_reported": false,
+    "police_report": true,
+    "photos_uploaded": true
+  },
+  "CLM-1002": {
+    "claim_type": "auto",
+    "estimated_loss": 42000,
+    "injury_reported": true,
+    "police_report": false,
+    "photos_uploaded": true
+  }
+}

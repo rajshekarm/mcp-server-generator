@@ -1,0 +1,1 @@
+"""Insurance MCP server package."""
