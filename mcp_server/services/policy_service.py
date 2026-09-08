@@ -2,8 +2,7 @@ from clients.policy import PolicyApiClient
 
 class PolicyService:
 
-    def __init__(self, policy_client: PolicyApiClient,
-    ):
+    def __init__(self, policy_client: PolicyApiClient):
         self.policy_client = policy_client
 
 

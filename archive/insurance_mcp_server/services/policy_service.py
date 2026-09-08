@@ -1,5 +1,5 @@
-from integrations.policy_admin import PolicyAdminClient
-from models.policy import Policy
+from archive.insurance_mcp_server.integrations.policy_admin import PolicyAdminClient
+from archive.insurance_mcp_server.models.policy import Policy
 
 class PolicyService:
 

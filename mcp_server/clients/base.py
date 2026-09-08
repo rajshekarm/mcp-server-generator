@@ -13,3 +13,7 @@ class BaseApiClient:
             response = await client.get(url, **kwargs)
             response.raise_for_status()
             return response.json()
+
+
+    #TODO: write
+    #  

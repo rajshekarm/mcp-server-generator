@@ -1,6 +1,6 @@
 from fastmcp import FastMCP
 
-from services.policy_service import PolicyService
+from archive.insurance_mcp_server.services.policy_service import PolicyService
 
 
 def register_policy_tools(

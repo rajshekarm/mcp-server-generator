@@ -1,8 +1,8 @@
 from fastmcp import FastMCP
 
-from integrations.policy_admin import PolicyAdminClient
-from services.policy_service import PolicyService
-from tools.policy import register_policy_tools
+from archive.insurance_mcp_server.integrations.policy_admin import PolicyAdminClient
+from archive.insurance_mcp_server.services.policy_service import PolicyService
+from archive.insurance_mcp_server.tools.policy import register_policy_tools
 
 
 def create_server() -> FastMCP:

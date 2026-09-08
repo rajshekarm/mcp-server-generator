@@ -1,4 +1,4 @@
-from models.policy import Policy
+from archive.insurance_mcp_server.models.policy import Policy
 
 
 class PolicyAdminClient:

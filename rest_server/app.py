@@ -3,7 +3,7 @@ from typing import Any
 from fastapi import FastAPI, HTTPException
 
 
-app = FastAPI(title="Policy REST API", version="1.0.0")
+app = FastAPI(title="Insurance REST API", version="1.0.0")
 
 
 POLICIES: dict[str, dict[str, Any]] = {
@@ -25,6 +25,23 @@ POLICIES: dict[str, dict[str, Any]] = {
     },
 }
 
+CUSTOMERS: dict[str, dict[str, Any]] = {
+    "CUS-1001": {
+        "customerId": "CUS-1001",
+        "name": "John Doe",
+        "email": "john.doe@example.com",
+        "phone": "+1-555-0101",
+        "address": "100 Main Street, Chicago, IL",
+    },
+    "CUS-1002": {
+        "customerId": "CUS-1002",
+        "name": "Jane Smith",
+        "email": "jane.smith@example.com",
+        "phone": "+1-555-0102",
+        "address": "200 Oak Avenue, Austin, TX",
+    },
+}
+
 
 @app.get("/health")
 async def health() -> dict[str, str]:
@@ -42,3 +59,16 @@ async def get_policy(policy_number: str) -> dict[str, Any]:
         )
 
     return policy
+
+
+@app.get("/customers/{customer_id}")
+async def get_customer(customer_id: str) -> dict[str, Any]:
+    customer = CUSTOMERS.get(customer_id.upper())
+
+    if customer is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Customer {customer_id} was not found",
+        )
+
+    return customer
