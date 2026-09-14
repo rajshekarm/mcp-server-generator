@@ -12,6 +12,7 @@ from services.policy_service import PolicyService
 
 
 mcp = FastMCP("insurance-mcp-server")
+
 policy_client = PolicyApiClient(
     base_url=os.getenv(
         "POLICY_API_BASE_URL",
@@ -46,4 +47,16 @@ register_customer_tools(
 
 
 if __name__ == "__main__":
-    mcp.run()
+    #stdio
+    #mcp.run()
+
+    #http streamable
+    mcp.run(
+        transport="http",
+        host="127.0.0.1",
+        port=8001,
+        path="/mcp",
+    )
+
+    
+

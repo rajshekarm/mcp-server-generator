@@ -9,7 +9,6 @@ app = FastAPI(title="Insurance REST API", version="1.0.0")
 POLICIES: dict[str, dict[str, Any]] = {
     "POL-1001": {
         "policyNumber": "POL-1001",
-        "policyStatus": "A",
         "effectiveDate": "2026-01-01",
         "expirationDate": "2026-12-31",
         "productName": "Auto Insurance",
@@ -17,7 +16,6 @@ POLICIES: dict[str, dict[str, Any]] = {
     },
     "POL-1002": {
         "policyNumber": "POL-1002",
-        "policyStatus": "C",
         "effectiveDate": "2025-01-01",
         "expirationDate": "2025-12-31",
         "productName": "Home Insurance",
@@ -31,6 +29,7 @@ CUSTOMERS: dict[str, dict[str, Any]] = {
         "name": "John Doe",
         "email": "john.doe@example.com",
         "phone": "+1-555-0101",
+        "policyNumber" : "POL-1001",
         "address": "100 Main Street, Chicago, IL",
     },
     "CUS-1002": {
@@ -38,6 +37,7 @@ CUSTOMERS: dict[str, dict[str, Any]] = {
         "name": "Jane Smith",
         "email": "jane.smith@example.com",
         "phone": "+1-555-0102",
+        "policyNumber" : "POL-1002",
         "address": "200 Oak Avenue, Austin, TX",
     },
 }

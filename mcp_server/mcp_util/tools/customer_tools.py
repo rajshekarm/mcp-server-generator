@@ -9,6 +9,8 @@ def register_customer_tools(
 ) -> None:
     @mcp.tool()
     async def get_customer(customer_id: str) -> dict:
-        """Retrieve a customer by customer ID."""
+        """Retrieve a customer by customer ID.
+           
+        """
 
         return await service.get_customer(customer_id)
