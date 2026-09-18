@@ -1,0 +1,71 @@
+### Generate an inventory MCP server
+POST http://127.0.0.1:9000/mcp-servers
+Content-Type: application/json
+
+{
+  "api_url": "http://127.0.0.1:8101",
+  "name": "inventory-mcp",
+  "title": "Warehouse Inventory MCP",
+  "description": "Search products and manage warehouse stock",
+  "version": "1.0.0"
+}
+
+### Generate a customer support MCP server
+POST http://127.0.0.1:9000/mcp-servers
+Content-Type: application/json
+
+{
+  "api_url": "http://127.0.0.1:8102",
+  "name": "support-mcp",
+  "title": "Customer Support MCP",
+  "description": "Create, search, and update customer support tickets",
+  "version": "1.0.0"
+}
+
+### Generate a shipping MCP server
+POST http://127.0.0.1:9000/mcp-servers
+Content-Type: application/json
+
+{
+  "api_url": "http://127.0.0.1:8103",
+  "name": "shipping-mcp",
+  "title": "Shipping and Tracking MCP",
+  "description": "Calculate shipping quotes and track parcels",
+  "version": "1.0.0"
+}
+
+### Generate a PolicyCenter MCP server
+POST http://127.0.0.1:9000/mcp-servers
+Content-Type: application/json
+
+{
+  "api_url": "http://127.0.0.1:8111",
+  "name": "policy-center-mcp",
+  "title": "Insurance PolicyCenter MCP",
+  "description": "Search policies, inspect coverage, and calculate endorsement quotes",
+  "version": "1.0.0"
+}
+
+### Generate a ClaimCenter MCP server
+POST http://127.0.0.1:9000/mcp-servers
+Content-Type: application/json
+
+{
+  "api_url": "http://127.0.0.1:8112",
+  "name": "claim-center-mcp",
+  "title": "Insurance ClaimCenter MCP",
+  "description": "Report, search, and manage insurance claims",
+  "version": "1.0.0"
+}
+
+### Generate a BillingCenter MCP server
+POST http://127.0.0.1:9000/mcp-servers
+Content-Type: application/json
+
+{
+  "api_url": "http://127.0.0.1:8113",
+  "name": "billing-center-mcp",
+  "title": "Insurance BillingCenter MCP",
+  "description": "Review policy billing accounts, invoices, and payments",
+  "version": "1.0.0"
+}

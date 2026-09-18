@@ -1,0 +1,477 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Insurance PolicyCenter API",
+    "description": "Search policies, inspect coverage, and calculate endorsement quotes.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "policy_center_health",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Policy Center Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/policies": {
+      "get": {
+        "summary": "Search Policies",
+        "operationId": "search_policies",
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Customer Id"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "active",
+                    "pending",
+                    "cancelled",
+                    "expired"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "product",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "personal_auto",
+                    "homeowners"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Product"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Policy"
+                  },
+                  "title": "Response Search Policies"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/policies/{policy_number}": {
+      "get": {
+        "summary": "Get Policy",
+        "operationId": "get_policy",
+        "parameters": [
+          {
+            "name": "policy_number",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Policy Number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Policy"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/policies/{policy_number}/coverages": {
+      "get": {
+        "summary": "Get Policy Coverages",
+        "operationId": "get_policy_coverages",
+        "parameters": [
+          {
+            "name": "policy_number",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Policy Number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Coverage"
+                  },
+                  "title": "Response Get Policy Coverages"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/policies/{policy_number}/endorsement-quotes": {
+      "post": {
+        "summary": "Calculate Endorsement Quote",
+        "operationId": "calculate_endorsement_quote",
+        "parameters": [
+          {
+            "name": "policy_number",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Policy Number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EndorsementQuoteRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EndorsementQuote"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Coverage": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "limit": {
+            "type": "number",
+            "title": "Limit"
+          },
+          "deductible": {
+            "type": "number",
+            "title": "Deductible"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "name",
+          "limit",
+          "deductible"
+        ],
+        "title": "Coverage"
+      },
+      "EndorsementQuote": {
+        "properties": {
+          "policy_number": {
+            "type": "string",
+            "title": "Policy Number"
+          },
+          "change_type": {
+            "type": "string",
+            "title": "Change Type"
+          },
+          "current_annual_premium": {
+            "type": "number",
+            "title": "Current Annual Premium"
+          },
+          "premium_change": {
+            "type": "number",
+            "title": "Premium Change"
+          },
+          "estimated_annual_premium": {
+            "type": "number",
+            "title": "Estimated Annual Premium"
+          }
+        },
+        "type": "object",
+        "required": [
+          "policy_number",
+          "change_type",
+          "current_annual_premium",
+          "premium_change",
+          "estimated_annual_premium"
+        ],
+        "title": "EndorsementQuote"
+      },
+      "EndorsementQuoteRequest": {
+        "properties": {
+          "change_type": {
+            "type": "string",
+            "enum": [
+              "increase_limit",
+              "decrease_deductible",
+              "add_driver"
+            ],
+            "title": "Change Type"
+          },
+          "coverage_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coverage Code"
+          },
+          "requested_value": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requested Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "change_type"
+        ],
+        "title": "EndorsementQuoteRequest"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Policy": {
+        "properties": {
+          "policy_number": {
+            "type": "string",
+            "title": "Policy Number"
+          },
+          "customer_id": {
+            "type": "string",
+            "title": "Customer Id"
+          },
+          "product": {
+            "type": "string",
+            "enum": [
+              "personal_auto",
+              "homeowners"
+            ],
+            "title": "Product"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "pending",
+              "cancelled",
+              "expired"
+            ],
+            "title": "Status"
+          },
+          "effective_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Effective Date"
+          },
+          "expiration_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Expiration Date"
+          },
+          "annual_premium": {
+            "type": "number",
+            "title": "Annual Premium"
+          },
+          "coverages": {
+            "items": {
+              "$ref": "#/components/schemas/Coverage"
+            },
+            "type": "array",
+            "title": "Coverages"
+          }
+        },
+        "type": "object",
+        "required": [
+          "policy_number",
+          "customer_id",
+          "product",
+          "status",
+          "effective_date",
+          "expiration_date",
+          "annual_premium",
+          "coverages"
+        ],
+        "title": "Policy"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

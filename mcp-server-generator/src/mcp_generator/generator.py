@@ -21,6 +21,7 @@ class GeneratorError(RuntimeError):
 @dataclass(frozen=True)
 class GenerationResult:
     output_dir: Path
+    server_name: str
     openapi_url: str
     api_base_url: str
     mcp_url: str
@@ -243,6 +244,7 @@ def generate_server(
 
     return GenerationResult(
         output_dir=output_dir,
+        server_name=normalized_name,
         openapi_url=openapi_url,
         api_base_url=api_base_url,
         mcp_url=normalized_mcp_url,

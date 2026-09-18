@@ -9,11 +9,14 @@ description = "Generate a ready-to-run FastMCP server from an OpenAPI REST API"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "fastapi>=0.115",
     "httpx>=0.27",
+    "uvicorn>=0.30",
 ]
 
 [project.scripts]
 mcp-generator = "mcp_generator.__main__:main"
+mcp-generator-api = "mcp_generator.api:run"
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -1,0 +1,15 @@
+### Generator health
+GET http://127.0.0.1:9000/health
+
+### Generate an MCP server from the sample REST API
+POST http://127.0.0.1:9000/mcp-servers
+Content-Type: application/json
+
+{
+  "api_url": "http://127.0.0.1:8000",
+  "name": "insurance-mcp",
+  "title": "Insurance MCP",
+  "description": "Provides MCP tools for the Insurance REST API",
+  "version": "1.0.0",
+  "mcp_url": "http://127.0.0.1:8001/mcp"
+}
