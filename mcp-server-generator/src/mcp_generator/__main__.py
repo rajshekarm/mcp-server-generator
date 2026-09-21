@@ -30,7 +30,8 @@ def build_parser() -> argparse.ArgumentParser:
         "--mcp-url",
         default=DEFAULT_MCP_URL,
         help=(
-            "MCP endpoint returned to clients after the server is deployed "
+            "MCP endpoint returned to clients and used for the generated "
+            "server's default host, port, and path "
             f"(default: {DEFAULT_MCP_URL})."
         ),
     )

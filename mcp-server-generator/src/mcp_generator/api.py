@@ -24,7 +24,13 @@ class GenerateServerRequest(BaseModel):
         max_length=1000,
     )
     version: str = Field(default="1.0.0", min_length=1, max_length=50)
-    mcp_url: AnyHttpUrl = AnyHttpUrl(DEFAULT_MCP_URL)
+    mcp_url: AnyHttpUrl = Field(
+        default=AnyHttpUrl(DEFAULT_MCP_URL),
+        description=(
+            "MCP endpoint URL returned to clients and used for the generated "
+            "server's default host, port, and path"
+        ),
+    )
 
 
 class ServerIdentity(BaseModel):

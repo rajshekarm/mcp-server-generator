@@ -64,14 +64,15 @@ python server.py
 ```
 
 The command returns the MCP endpoint URL for clients to consume. Its default is
-`http://127.0.0.1:8001/mcp`. When the generated server is deployed, pass its
-externally reachable endpoint through `--mcp-url`, for example
-`https://mcp.example.com/insurance/mcp`.
+`http://127.0.0.1:8001/mcp`. The URL's host, port, and path also become the
+generated server's runtime defaults. For example, `--mcp-url
+http://127.0.0.1:8004/custom-mcp` generates a server that listens on host
+`127.0.0.1`, port `8004`, and path `/custom-mcp` by default.
 
 The generated server supports the `API_BASE_URL`, `MCP_HOST`, `MCP_PORT`, and
-`MCP_PATH` environment variables. The value given to `--mcp-url` describes the
-client-facing endpoint; it does not deploy the server or change those runtime
-settings.
+`MCP_PATH` environment variables. These variables can override the defaults
+derived from `--mcp-url` when the server starts. Generating the files does not
+deploy or start the server.
 
 ## Generator HTTP API
 

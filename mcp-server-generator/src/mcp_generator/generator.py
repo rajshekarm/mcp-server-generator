@@ -35,6 +35,10 @@ def _validate_url(value: str, option_name: str) -> str:
         raise GeneratorError(
             f"{option_name} must be an absolute http:// or https:// URL"
         )
+    try:
+        parsed.port
+    except ValueError as exc:
+        raise GeneratorError(f"{option_name} contains an invalid port") from exc
     return normalized
 
 
@@ -116,9 +120,26 @@ def _operation_count(document: dict[str, Any]) -> int:
     )
 
 
-def _server_source(server_name: str, api_base_url: str) -> str:
+def _mcp_runtime_defaults(mcp_url: str) -> tuple[str, int, str]:
+    parsed = urlparse(mcp_url)
+    if parsed.query or parsed.fragment:
+        raise GeneratorError("--mcp-url cannot contain a query string or fragment")
+
+    host = parsed.hostname
+    if host is None:
+        raise GeneratorError("--mcp-url must contain a host")
+
+    port = parsed.port or (443 if parsed.scheme == "https" else 80)
+    path = parsed.path or "/mcp"
+    return host, port, path
+
+
+def _server_source(server_name: str, api_base_url: str, mcp_url: str) -> str:
+    mcp_host, mcp_port, mcp_path = _mcp_runtime_defaults(mcp_url)
     encoded_name = json.dumps(server_name)
     encoded_base_url = json.dumps(api_base_url)
+    encoded_mcp_host = json.dumps(mcp_host)
+    encoded_mcp_path = json.dumps(mcp_path)
     return f'''from __future__ import annotations
 
 import json
@@ -151,9 +172,9 @@ mcp = FastMCP.from_openapi(
 if __name__ == "__main__":
     mcp.run(
         transport="http",
-        host=os.getenv("MCP_HOST", "127.0.0.1"),
-        port=int(os.getenv("MCP_PORT", "8001")),
-        path=os.getenv("MCP_PATH", "/mcp"),
+        host=os.getenv("MCP_HOST", {encoded_mcp_host}),
+        port=int(os.getenv("MCP_PORT", "{mcp_port}")),
+        path=os.getenv("MCP_PATH", {encoded_mcp_path}),
     )
 '''
 
@@ -201,6 +222,7 @@ def generate_server(
 ) -> GenerationResult:
     normalized_url = _validate_url(customer_url, "--url")
     normalized_mcp_url = _validate_url(mcp_url, "--mcp-url")
+    _mcp_runtime_defaults(normalized_mcp_url)
     normalized_name = server_name.strip()
     if not normalized_name:
         raise GeneratorError("The server name cannot be empty")
@@ -225,7 +247,7 @@ def generate_server(
         encoding="utf-8",
     )
     (output_dir / "server.py").write_text(
-        _server_source(normalized_name, api_base_url),
+        _server_source(normalized_name, api_base_url, normalized_mcp_url),
         encoding="utf-8",
     )
     (output_dir / "requirements.txt").write_text(
