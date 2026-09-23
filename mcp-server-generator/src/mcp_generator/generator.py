@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -49,6 +50,27 @@ def _looks_like_openapi(document: Any) -> bool:
         and document["openapi"].startswith("3.")
         and isinstance(document.get("paths"), dict)
     )
+
+
+def _normalize_openapi_for_fastmcp(
+    document: dict[str, Any],
+) -> dict[str, Any]:
+    """Return a FastMCP-compatible copy of an OpenAPI document.
+
+    FastMCP 4.0.1's parser currently accepts OpenAPI 3.1.0 and 3.1.1,
+    while some APIs already publish later 3.1 patch releases such as 3.1.2.
+    OpenAPI patch releases are backwards compatible, so advertise 3.1.1 to
+    the parser without changing the API paths, schemas, or operations.
+    """
+    normalized = document.copy()
+    version = normalized.get("openapi")
+    if (
+        isinstance(version, str)
+        and re.fullmatch(r"3\.1\.\d+", version)
+        and version not in {"3.1.0", "3.1.1"}
+    ):
+        normalized["openapi"] = "3.1.1"
+    return normalized
 
 
 def _candidate_urls(customer_url: str) -> list[str]:
@@ -146,7 +168,7 @@ import json
 import os
 from pathlib import Path
 
-import httpx
+import httpx2
 from fastmcp import FastMCP
 
 
@@ -156,10 +178,10 @@ DEFAULT_API_BASE_URL = {encoded_base_url}
 with SPEC_PATH.open(encoding="utf-8") as spec_file:
     openapi_spec = json.load(spec_file)
 
-api_client = httpx.AsyncClient(
+api_client = httpx2.AsyncClient(
     base_url=os.getenv("API_BASE_URL", DEFAULT_API_BASE_URL),
-    timeout=httpx.Timeout(15.0),
-    limits=httpx.Limits(max_connections=100, max_keepalive_connections=20),
+    timeout=httpx2.Timeout(15.0),
+    limits=httpx2.Limits(max_connections=100, max_keepalive_connections=20),
 )
 
 mcp = FastMCP.from_openapi(
@@ -228,6 +250,7 @@ def generate_server(
         raise GeneratorError("The server name cannot be empty")
 
     openapi_url, document = _discover_openapi(normalized_url)
+    document = _normalize_openapi_for_fastmcp(document)
     api_base_url = _derive_api_base_url(normalized_url, openapi_url, document)
     operation_count = _operation_count(document)
     if operation_count == 0:
@@ -251,7 +274,7 @@ def generate_server(
         encoding="utf-8",
     )
     (output_dir / "requirements.txt").write_text(
-        "fastmcp>=2.0\nhttpx>=0.27\n",
+        "fastmcp>=4.0\nhttpx2>=2.5\n",
         encoding="utf-8",
     )
     (output_dir / "README.md").write_text(
