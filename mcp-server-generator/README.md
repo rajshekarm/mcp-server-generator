@@ -50,6 +50,7 @@ The output is a separate runnable project:
 ```text
 generated/insurance_mcp/
 |-- server.py
+|-- server.json
 |-- openapi.json
 |-- requirements.txt
 `-- README.md
@@ -114,6 +115,39 @@ been deployed or started.
 
 Interactive API documentation is available at `http://127.0.0.1:9000/docs`.
 Set `MCP_GENERATOR_OUTPUT_ROOT` to change where generated projects are stored.
+
+## Manage generated servers
+
+The generator API also acts as a local process manager:
+
+```http
+GET  http://127.0.0.1:9000/mcp-servers
+GET  http://127.0.0.1:9000/mcp-servers/{server_id}
+POST http://127.0.0.1:9000/mcp-servers/{server_id}/start
+POST http://127.0.0.1:9000/mcp-servers/{server_id}/stop
+GET  http://127.0.0.1:9000/mcp-servers/{server_id}/logs
+```
+
+Each generated project has a `server.json` manifest. Older generated projects
+are discovered and receive a manifest automatically. Processes started through
+the API are stopped when the generator shuts down. A process already using a
+server's port is reported as `external` and is never terminated by the
+generator.
+
+## React dashboard
+
+Keep the generator API running, then open a second terminal:
+
+```powershell
+cd dashboard
+npm.cmd install
+npm.cmd run dev
+```
+
+Open `http://127.0.0.1:5173`. The dashboard lists generated servers, refreshes
+their state automatically, starts and stops API-managed servers, and displays
+their latest logs. Set `VITE_API_BASE_URL` before starting Vite if the generator
+API is not running at `http://127.0.0.1:9000`.
 
 ## Start all generated MCP servers
 

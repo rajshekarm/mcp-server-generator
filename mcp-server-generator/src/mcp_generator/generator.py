@@ -11,7 +11,13 @@ import httpx
 
 
 OPENAPI_PATHS = ("openapi.json", "swagger.json", "v3/api-docs")
-GENERATED_FILES = ("server.py", "openapi.json", "requirements.txt", "README.md")
+GENERATED_FILES = (
+    "server.py",
+    "server.json",
+    "openapi.json",
+    "requirements.txt",
+    "README.md",
+)
 DEFAULT_MCP_URL = "http://127.0.0.1:8001/mcp"
 
 
