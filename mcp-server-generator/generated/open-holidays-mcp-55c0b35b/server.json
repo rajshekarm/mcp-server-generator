@@ -1,0 +1,23 @@
+{
+  "server": {
+    "id": "open-holidays-mcp-55c0b35b",
+    "name": "open-holidays-mcp",
+    "title": "OpenHolidays API v1",
+    "description": "Open Data API for public and school holidays",
+    "version": "v1"
+  },
+  "connection": {
+    "transport": "streamable-http",
+    "url": "http://127.0.0.1:8004/mcp"
+  },
+  "capabilities": {
+    "tools": true,
+    "tool_count": 10
+  },
+  "status": "generated",
+  "generation": {
+    "output_directory": "C:\\Users\\divya\\Downloads\\Raj\\Learning\\AI-Agents\\mcps\\mcp-server-generator\\generated\\open-holidays-mcp-55c0b35b",
+    "openapi_source": null,
+    "api_base_url": "https://openholidaysapi.org/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "server": {
+    "id": "policy-center-mcp-30641742",
+    "name": "policy-center-mcp",
+    "title": "Insurance PolicyCenter API",
+    "description": "Search policies, inspect coverage, and calculate endorsement quotes.",
+    "version": "1.0.0"
+  },
+  "connection": {
+    "transport": "streamable-http",
+    "url": "http://127.0.0.1:8001/mcp"
+  },
+  "capabilities": {
+    "tools": true,
+    "tool_count": 5
+  },
+  "status": "generated",
+  "generation": {
+    "output_directory": "C:\\Users\\divya\\Downloads\\Raj\\Learning\\AI-Agents\\mcps\\mcp-server-generator\\generated\\policy-center-mcp-30641742",
+    "openapi_source": null,
+    "api_base_url": "http://127.0.0.1:8111"
+  }
+}
